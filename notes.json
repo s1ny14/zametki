@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Планы на день",
+    "content": "1. Приготовить покушать\n2. Убраться дома",
+    "priority": "medium",
+    "status": "active",
+    "created_at": "2025-11-10T10:48:39.123905"
+  },
+  {
+    "id": 2,
+    "title": "Свечки",
+    "content": "Сделать саше",
+    "priority": "high",
+    "status": "active",
+    "created_at": "2025-11-10T11:04:11.639321"
+  }
+]
