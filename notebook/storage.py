@@ -1,3 +1,9 @@
+"""
+Модуль storage - работа с хранилищем заметок.
+
+Обеспечивает сохранение и загрузку заметок в формате JSON.
+"""
+
 import json
 import os
 from typing import List, Dict
@@ -5,12 +11,31 @@ from .models import Note
 
 NOTES_FILE = "notes.json"
 
+
 class Storage:
+    """Класс для работы с хранилищем заметок в формате JSON.
+
+    Attributes:
+        file_path (str): Путь к файлу с заметками
+    """
+
     def __init__(self, file_path: str = NOTES_FILE):
+        """Инициализирует хранилище.
+
+        Args:
+            file_path (str, optional): Путь к файлу заметок. Defaults to NOTES_FILE.
+        """
         self.file_path = file_path
 
     def _load_notes(self) -> List[Dict]:
-        """Читает заметки из файла. Возвращает пустой список, если файл не существует."""
+        """Читает заметки из файла.
+
+        Returns:
+            List[Dict]: Список заметок в виде словарей
+
+        Note:
+            Возвращает пустой список, если файл не существует
+        """
         if not os.path.exists(self.file_path):
             return []
         try:
@@ -21,7 +46,14 @@ class Storage:
             return []
 
     def _save_notes(self, notes: List[Dict]) -> bool:
-        """Сохраняет заметки в файл."""
+        """Сохраняет заметки в файл.
+
+        Args:
+            notes (List[Dict]): Список заметок для сохранения
+
+        Returns:
+            bool: True если сохранение успешно, иначе False
+        """
         try:
             with open(self.file_path, 'w', encoding='utf-8') as f:
                 json.dump(notes, f, ensure_ascii=False, indent=2)
@@ -31,7 +63,11 @@ class Storage:
             return False
 
     def get_all(self) -> List[Note]:
-        """Возвращает все заметки как объекты Note."""
+        """Возвращает все заметки как объекты Note.
+
+        Returns:
+            List[Note]: Список объектов Note
+        """
         data = self._load_notes()
         notes = []
         for item in data:
@@ -40,7 +76,14 @@ class Storage:
         return notes
 
     def save(self, note: Note) -> bool:
-        """Сохраняет одну заметку (добавляет или обновляет)."""
+        """Сохраняет одну заметку (добавляет или обновляет).
+
+        Args:
+            note (Note): Объект заметки для сохранения
+
+        Returns:
+            bool: True если сохранение успешно, иначе False
+        """
         notes = self.get_all()
         if note.id is None:
             # Новая заметка — назначаем ID
@@ -53,7 +96,14 @@ class Storage:
         return self._save_notes([n.to_dict() for n in notes])
 
     def delete(self, note_id: int) -> bool:
-        """Удаляет заметку по ID."""
+        """Удаляет заметку по ID.
+
+        Args:
+            note_id (int): ID заметки для удаления
+
+        Returns:
+            bool: True если удаление успешно, иначе False
+        """
         notes = self.get_all()
         filtered = [n for n in notes if n.id != note_id]
         if len(filtered) == len(notes):
